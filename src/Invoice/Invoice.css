@@ -1,0 +1,52 @@
+.container {
+    margin: 1em;
+}
+
+#date {
+    font-family: "Courier New", Courier, monospace;
+}
+
+#orderNumber {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.item {
+    margin: 1em auto 1em;
+}
+
+.itemList {
+    margin-left: 1em;
+}
+
+.itemImage {
+    float: left;
+}
+
+.itemPrice {
+    float: right;
+}
+
+.itemInfo {
+    overflow: hidden;
+    padding-left: 1em;
+}
+
+.dividerLine {
+    margin: 3em auto 1em;
+}
+
+p {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.totalPrice {
+    float: right;
+}
+
+.footer {
+    margin-top: 8em;
+}
+
+.address.p {
+    margin: auto;
+}

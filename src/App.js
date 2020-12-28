@@ -4,14 +4,10 @@ import { Button, Header, Form, Divider } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 
 const BillingForm = (props) => {
-    const [currentBilling, setCurrentBilling] = useState({
-        orderNumer: "",
-        date: "",
-        email: "",
-        address1: "",
-        address2: "",
-        telephone: "",
-    });
+    const [currentBilling, setCurrentBilling] = useState(props.billingInfo);
+
+    console.log("props", props);
+    console.log("current billinginfo", currentBilling);
 
     useEffect(() => {
         props.parentUpdateBillingInfo(currentBilling);
@@ -19,6 +15,12 @@ const BillingForm = (props) => {
 
     const inputChanged = (e) => {
         switch (e.target.id) {
+            case "nameField":
+                setCurrentBilling({
+                    ...currentBilling,
+                    name: e.target.value,
+                });
+                break;
             case "orderNumberField":
                 setCurrentBilling({
                     ...currentBilling,
@@ -41,6 +43,18 @@ const BillingForm = (props) => {
                 setCurrentBilling({
                     ...currentBilling,
                     address2: e.target.value,
+                });
+                break;
+            case "cityField":
+                setCurrentBilling({
+                    ...currentBilling,
+                    city: e.target.value,
+                });
+                break;
+            case "zipCodeField":
+                setCurrentBilling({
+                    ...currentBilling,
+                    zipCode: e.target.value,
                 });
                 break;
             case "telephoneField":
@@ -69,6 +83,7 @@ const BillingForm = (props) => {
                     label="Order Number *"
                     placeholder=""
                     onChange={(e) => inputChanged(e)}
+                    value={currentBilling.orderNumer}
                 />
                 <Form.Input
                     id="dateField"
@@ -76,6 +91,15 @@ const BillingForm = (props) => {
                     label="Date *"
                     placeholder="YYYY-MM-DD"
                     onChange={(e) => inputChanged(e)}
+                    value={currentBilling.date}
+                />
+                <Form.Input
+                    id="nameField"
+                    fluid
+                    label="Name *"
+                    placeholder=""
+                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.name}
                 />
                 <Form.Input
                     id="emailField"
@@ -83,20 +107,7 @@ const BillingForm = (props) => {
                     label="Email *"
                     placeholder=""
                     onChange={(e) => inputChanged(e)}
-                />
-                <Form.Input
-                    id="adress1Field"
-                    fluid
-                    label="Address 1 *"
-                    placeholder=""
-                    onChange={(e) => inputChanged(e)}
-                />
-                <Form.Input
-                    id="address2Field"
-                    fluid
-                    label="Address 2"
-                    placeholder=""
-                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.email}
                 />
                 <Form.Input
                     id="telephoneField"
@@ -104,6 +115,41 @@ const BillingForm = (props) => {
                     label="Telephone *"
                     placeholder=""
                     onChange={(e) => inputChanged(e)}
+                    value={currentBilling.telephone}
+                />
+            </Form.Group>
+            <Form.Group widths="equal">
+                <Form.Input
+                    id="adress1Field"
+                    fluid
+                    label="Address 1 *"
+                    placeholder=""
+                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.address1}
+                />
+                <Form.Input
+                    id="address2Field"
+                    fluid
+                    label="Address 2"
+                    placeholder=""
+                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.address2}
+                />
+                <Form.Input
+                    id="zipCodeField"
+                    fluid
+                    label="Zip Code *"
+                    placeholder=""
+                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.zipCode}
+                />
+                <Form.Input
+                    id="cityField"
+                    fluid
+                    label="City *"
+                    placeholder=""
+                    onChange={(e) => inputChanged(e)}
+                    value={currentBilling.city}
                 />
             </Form.Group>
         </div>
@@ -111,17 +157,8 @@ const BillingForm = (props) => {
 };
 
 const ItemForm = (props) => {
-    const { id } = props.item;
-
     const [idToDelete, setIdToDelete] = useState(-1);
-    const [currentItem, setCurrentItem] = useState({
-        id: id,
-        name: "",
-        price: "",
-        color: "",
-        size: "",
-        imgUrl: "",
-    });
+    const [currentItem, setCurrentItem] = useState(props.item);
 
     useEffect(() => {
         if (idToDelete !== -1) {
@@ -162,6 +199,7 @@ const ItemForm = (props) => {
                 label="Name *"
                 placeholder=""
                 onChange={(e) => inputChanged(e)}
+                value={currentItem.name}
             ></Form.Input>
             <Form.Input
                 id="priceField"
@@ -169,6 +207,7 @@ const ItemForm = (props) => {
                 label="Price *"
                 placeholder=""
                 onChange={(e) => inputChanged(e)}
+                value={currentItem.price}
             ></Form.Input>
             <Form.Input
                 id="colorField"
@@ -176,6 +215,7 @@ const ItemForm = (props) => {
                 label="Color *"
                 placeholder=""
                 onChange={(e) => inputChanged(e)}
+                value={currentItem.color}
             ></Form.Input>
             <Form.Input
                 id="sizeField"
@@ -183,6 +223,7 @@ const ItemForm = (props) => {
                 label="Size *"
                 placeholder=""
                 onChange={(e) => inputChanged(e)}
+                value={currentItem.size}
             ></Form.Input>
             <Form.Input
                 id="urlField"
@@ -190,11 +231,12 @@ const ItemForm = (props) => {
                 label="Image URL *"
                 placeholder=""
                 onChange={(e) => inputChanged(e)}
+                value={currentItem.imgURLrl}
             ></Form.Input>
             <Button
                 compact
                 onClick={() => {
-                    setIdToDelete(id);
+                    setIdToDelete(currentItem.id);
                 }}
             >
                 Delete
@@ -204,43 +246,77 @@ const ItemForm = (props) => {
 };
 
 const InvoiceForm = () => {
-    const [billingInfo, setBillingInfo] = useState({
-        orderNumer: "",
-        date: "",
-        email: "",
-        address1: "",
-        address2: "",
-        telephone: "",
+    const [billingInfo, setBillingInfo] = useState(() => {
+        let billingInfoJson = JSON.parse(localStorage.getItem("billingInfo"));
+        if (billingInfoJson) {
+            let billingInfo = {
+                name: billingInfoJson["name"],
+                orderNumer: billingInfoJson["orderNumer"],
+                date: billingInfoJson["date"],
+                email: billingInfoJson["email"],
+                address1: billingInfoJson["address1"],
+                address2: billingInfoJson["address2"],
+                telephone: billingInfoJson["telephone"],
+                city: billingInfoJson["city"],
+                zipCode: billingInfoJson["zipCode"],
+            };
+            return billingInfo;
+        } else {
+            return {
+                name: "",
+                orderNumer: "",
+                date: "",
+                email: "",
+                address1: "",
+                address2: "",
+                telephone: "",
+                city: "",
+                zipCode: "",
+            };
+        }
     });
-    const [itemsList, setItemsList] = useState([]);
-    const [itemCount, setItemCount] = useState(0);
+    const [itemsList, setItemsList] = useState(() => {
+        let itemsListJson = JSON.parse(localStorage.getItem("itemsList"));
+        if (itemsListJson) {
+            let itemsList = [];
+            for (var i = 0; i < itemsListJson.length; i++) {
+                itemsList.push({
+                    id: itemsListJson[i]["id"],
+                    name: itemsListJson[i]["name"],
+                    price: itemsListJson[i]["price"],
+                    color: itemsListJson[i]["color"],
+                    size: itemsListJson[i]["size"],
+                    imgUrl: itemsListJson[i]["imgUrl"],
+                });
+            }
+            return itemsList;
+        } else {
+            return [];
+        }
+    });
 
     const addHandler = () => {
-        setItemCount((count) => {
-            let newCount = count + 1;
-            setItemsList([
-                ...itemsList,
-                {
-                    id: newCount,
-                    name: "",
-                    price: "",
-                    color: "",
-                    size: "",
-                    imgUrl: "",
-                },
-            ]);
-            return newCount;
-        });
+        setItemsList([
+            ...itemsList,
+            {
+                id: Math.floor(Math.random() * 999),
+                name: "",
+                price: "",
+                color: "",
+                size: "",
+                imgUrl: "",
+            },
+        ]);
     };
 
     const deleteHandler = (id) => {
-        let newItems = itemsList.filter((item) => item.id != id);
+        let newItems = itemsList.filter((item) => item.id !== id);
         setItemsList(newItems);
     };
 
     const updateItem = (item) => {
         const elementIndex = itemsList.findIndex(
-            (element) => element.id == item.id
+            (element) => element.id === item.id
         );
 
         let newItems = itemsList;
@@ -256,11 +332,11 @@ const InvoiceForm = () => {
         let isSomeFieldEmpty = false;
         for (var i = 0; i < itemsList.length; i++) {
             if (
-                itemsList[i].name == "" ||
-                itemsList[i].price == "" ||
-                itemsList[i].color == "" ||
-                itemsList[i].size == "" ||
-                itemsList[i].imgURLrl == ""
+                itemsList[i].name === "" ||
+                itemsList[i].price === "" ||
+                itemsList[i].color === "" ||
+                itemsList[i].size === "" ||
+                itemsList[i].imgURLrl === ""
             ) {
                 isSomeFieldEmpty = true;
             }
@@ -269,20 +345,28 @@ const InvoiceForm = () => {
     };
 
     const generateClicked = () => {
+        console.log(itemsListIsEmpty());
         if (
-            billingInfo.orderNumer != "" &&
-            billingInfo.date != "" &&
-            billingInfo.email != "" &&
-            billingInfo.address1 != "" &&
-            billingInfo.telephone != "" &&
+            billingInfo.name !== "" &&
+            billingInfo.orderNumer !== "" &&
+            billingInfo.date !== "" &&
+            billingInfo.email !== "" &&
+            billingInfo.address1 !== "" &&
+            billingInfo.telephone !== "" &&
+            billingInfo.city !== "" &&
+            billingInfo.zipCode !== "" &&
             !itemsListIsEmpty()
         ) {
             if (itemsList.length <= 0) {
                 alert("Add at least one item!");
             } else {
                 // redirect to print page
-                console.log(billingInfo);
-                console.log(itemsList);
+                localStorage.setItem(
+                    "billingInfo",
+                    JSON.stringify(billingInfo)
+                );
+                localStorage.setItem("itemsList", JSON.stringify(itemsList));
+                window.location.href = "/invoice";
             }
         } else {
             alert("Please fill all fields!");
@@ -294,6 +378,7 @@ const InvoiceForm = () => {
             <div>
                 <BillingForm
                     parentUpdateBillingInfo={updateBillingInfo}
+                    billingInfo={billingInfo}
                 ></BillingForm>
 
                 <Header as="h2" icon textAlign="center">
