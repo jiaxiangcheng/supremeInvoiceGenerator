@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Invoice.css";
 
 const Item = (props) => {
@@ -6,18 +6,21 @@ const Item = (props) => {
     return (
         <div className="item">
             <div className="itemImage">
-                <img
-                    src="https://stockx.imgix.net/images/Supreme-Cross-Box-Logo-Tee-White.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1608222061&w=1000"
-                    width="80"
-                ></img>
+                <img src={imgUrl} width="80"></img>
             </div>
             <div className="itemInfo">
                 <div id="name">
                     <p>{name}</p>
                 </div>
-                <div id="size">
-                    <p>{"Size: " + size}</p>
-                </div>
+                {() => {
+                    if (size !== "any") {
+                        return (
+                            <div id="size">
+                                <p>{"Size: " + size}</p>
+                            </div>
+                        );
+                    }
+                }}
                 <div id="style">
                     <p>{"Style: " + color}</p>
                 </div>
@@ -46,8 +49,11 @@ function Invoice() {
     };
 
     let itemsList = [];
+    let total = 0;
+    let cartTotal = 0;
+    let salesTax = 0;
+    let shipHandle = 0;
     for (var i = 0; i < itemsListJson.length; i++) {
-        console.log(itemsListJson[i]);
         itemsList.push({
             id: itemsListJson[i]["id"],
             name: itemsListJson[i]["name"],
@@ -56,7 +62,17 @@ function Invoice() {
             size: itemsListJson[i]["size"],
             imgUrl: itemsListJson[i]["imgUrl"],
         });
+
+        let price = itemsListJson[i]["price"];
+        price = price.substring(2, price.length);
+        price = parseInt(price);
+        total = total + price;
     }
+
+    shipHandle = 14.88;
+    salesTax = (total * 0.173549107).toFixed(2);
+    cartTotal = (total - 14.88 - salesTax).toFixed(2);
+    total = total.toFixed(2);
 
     return (
         <div className="container">
@@ -81,9 +97,10 @@ function Invoice() {
                 <hr className="dividerLine" />
                 <div className="totalPrice">
                     <div className="details">
-                        <p>{"Subtotal " + "$ 10.00"}</p>
-                        <p>{"Shipping " + "$ 10.00"}</p>
-                        <p>TOTAL $ 64.00</p>
+                        <p>{"cart total " + "€ " + cartTotal}</p>
+                        <p>{"ship & handle " + "€ 14.88"}</p>
+                        <p>{"sales tax " + "€ " + salesTax}</p>
+                        <p>{"order total € " + total}</p>
                     </div>
                 </div>
             </div>

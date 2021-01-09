@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 const BillingForm = (props) => {
     const [currentBilling, setCurrentBilling] = useState(props.billingInfo);
 
-    console.log("props", props);
-    console.log("current billinginfo", currentBilling);
+    // console.log("props", props);
+    // console.log("current billinginfo", currentBilling);
 
     useEffect(() => {
         props.parentUpdateBillingInfo(currentBilling);
@@ -33,13 +33,13 @@ const BillingForm = (props) => {
             case "emailField":
                 setCurrentBilling({ ...currentBilling, email: e.target.value });
                 break;
-            case "adress1Field":
+            case "address1Field":
                 setCurrentBilling({
                     ...currentBilling,
                     address1: e.target.value,
                 });
                 break;
-            case "adress2Field":
+            case "address2Field":
                 setCurrentBilling({
                     ...currentBilling,
                     address2: e.target.value,
@@ -120,7 +120,7 @@ const BillingForm = (props) => {
             </Form.Group>
             <Form.Group widths="equal">
                 <Form.Input
-                    id="adress1Field"
+                    id="address1Field"
                     fluid
                     label="Address 1 *"
                     placeholder=""
@@ -345,7 +345,6 @@ const InvoiceForm = () => {
     };
 
     const generateClicked = () => {
-        console.log(itemsListIsEmpty());
         if (
             billingInfo.name !== "" &&
             billingInfo.orderNumer !== "" &&

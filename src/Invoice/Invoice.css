@@ -6,29 +6,24 @@
     font-family: "Courier New", Courier, monospace;
 }
 
+.details {
+    text-align: right;
+}
+
 #orderNumber {
     font-family: "Courier New", Courier, monospace;
 }
-
-.item {
-    margin: 1em auto 1em;
-}
-
 .itemList {
     margin-left: 1em;
 }
 
-.itemImage {
-    float: left;
+.item {
+    margin: 1em auto 1em;
+    display: flex;
 }
-
-.itemPrice {
-    float: right;
-}
-
 .itemInfo {
-    overflow: hidden;
     padding-left: 1em;
+    flex-grow: 1;
 }
 
 .dividerLine {
@@ -44,9 +39,9 @@ p {
 }
 
 .footer {
-    margin-top: 8em;
+    margin-top: 15em;
 }
 
-.address.p {
-    margin: auto;
+.address > p {
+    margin: 1em 0 0em;
 }
